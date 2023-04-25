@@ -23,6 +23,7 @@ def show_products(request):
 
 
 
+
 def show_cart(request):
 
     if "product_pk" in request.COOKIES:
@@ -31,12 +32,13 @@ def show_cart(request):
         list_products = list()
         for product_pk in products_pk:
             list_products.append(Product.objects.get(pk=product_pk))
+        
         if request.method == 'POST':
             new_product = request.POST.get('product_pk')
             response.set_cookie('product_pk', new_product)
             list_products.pop(int(request.POST['product_pk'])) # Видаляємо товар зі списку за індексом
-            new_product = ' '.join(str(product.pk))# Створюємо новий рядок з PK товарів, які залишилися в кошику
-            response = render(request, "cart.html", context={"products": list_products}) # Формуємо сторінку зі списком залишених товарів
+            new_product = ' '.join(str(product.pk) for product in list_products) # Створюємо новий рядок з PK товарів, які залишилися в кошику
+            
             
             return response # Повертаємо сторінку зі списком залишених товарів
         else:
@@ -44,6 +46,5 @@ def show_cart(request):
     else:
         response = render(request,"cart.html",context={"products": []})
     return response
-
 
 
