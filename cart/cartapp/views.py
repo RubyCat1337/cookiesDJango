@@ -35,7 +35,7 @@ def show_cart(request):
             new_product = request.POST.get('product_pk')
             response.set_cookie('product_pk', new_product)
             list_products.pop(int(request.POST['product_pk'])) # Видаляємо товар зі списку за індексом
-            new_product = ' '.join(str(product.pk) for product in list_products) # Створюємо новий рядок з PK товарів, які залишилися в кошику
+            new_product = ' '.join(str(product.pk))# Створюємо новий рядок з PK товарів, які залишилися в кошику
             response = render(request, "cart.html", context={"products": list_products}) # Формуємо сторінку зі списком залишених товарів
             
             return response # Повертаємо сторінку зі списком залишених товарів
